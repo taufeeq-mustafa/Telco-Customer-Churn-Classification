@@ -13,15 +13,12 @@ import seaborn as sns
 from sklearn.model_selection import train_test_split
 from google.colab import drive
 
-# Load data
 drive.mount('/content/drive')
 df = pd.read_csv("/content/drive/MyDrive/WA_Fn-UseC_-Telco-Customer-Churn.csv")
-
 
 print(df.head())
 print(df.info()) 
 print(df["Churn"].value_counts())  
-
 
 sns.countplot(x="Churn", data=df)
 plt.title("Churn Distribution")
@@ -35,10 +32,8 @@ from sklearn.compose import ColumnTransformer
 df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")
 df["TotalCharges"].fillna(df["TotalCharges"].median(), inplace=True)
 
-
 X = df.drop("Churn", axis=1)
 y = df["Churn"].apply(lambda x: 1 if x == "Yes" else 0)  
-
 
 numeric_features = ["tenure", "MonthlyCharges", "TotalCharges"]
 categorical_features = ["Contract", "PaymentMethod", "gender"]  
@@ -50,7 +45,6 @@ preprocessor = ColumnTransformer(
     ])
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
-
 
 X_train_processed = preprocessor.fit_transform(X_train)
 X_test_processed = preprocessor.transform(X_test)
